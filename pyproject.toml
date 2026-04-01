@@ -1,0 +1,12 @@
+[project]
+name = "spamshield"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.135.2",
+    "pwdlib[argon2]>=0.3.0",
+    "pyjwt>=2.12.1",
+    "sqlalchemy>=2.0.48",
+]
