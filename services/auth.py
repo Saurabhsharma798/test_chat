@@ -14,10 +14,6 @@ ALGORITHM=settings.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES=settings.ACCESS_TOKEN_EXPIRE_MINUTES
 
 
-
-
-
-
 password_hash=PasswordHash.recommended()
 # oauth2_scheme=OAuth2PasswordBearer(tokenUrl='auth/login')
 security=HTTPBearer()
@@ -34,8 +30,9 @@ def verify_password(plain_password,hashed_password):
 #to fetch user from db
 def get_user(db,email):
     user=db.query(User).filter(User.email==email).first()
-    return user
-    
+    if user:
+        return user
+    return None
 
 #to authenticate user
 def authenticate_user(db,email:str,password:str):
@@ -69,11 +66,11 @@ def get_current_user(token:HTTPAuthorizationCredentials=Depends(security),db:Ses
         user_email = payload.get("sub")
 
         if user_email is None:
-            return {'user email  not found'}
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="invalid token")
         
         user=get_user(db,user_email)
         if user is None:
-            return {'user not in db'}
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="user not found")
         
         return user
     except jwt.InvalidTokenError:
