@@ -1,10 +1,10 @@
 from fastapi import APIRouter,Depends
 from models.message import Message
-# from schemas.conversation import Conversation
 from schemas.message import MessageRequest,MessageResponse,MessageListResponse
 from sqlalchemy.orm import Session
 from database.db import get_db
 from services.auth import get_current_user
+from services.llm import call_model
 
 router = APIRouter(prefix='/chat',tags=['chat'])
 
@@ -23,8 +23,8 @@ def chat(chat_id:int,data:MessageRequest,db:Session=Depends(get_db),user=Depends
     db.add(user_message)
     db.commit()
     db.refresh(user_message)
-    response={'role':'ai','content':"hello"}
-
+    response=call_model(conversation_id,db)
+    
     ai_message=Message(
         conversation_id=conversation_id,
         role="ai",

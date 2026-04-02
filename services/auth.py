@@ -6,12 +6,16 @@ from models.user import User
 from fastapi import Depends,HTTPException,status
 from sqlalchemy.orm import Session
 from database.db import get_db
+from core.config import settings
+
+
+SECRET_KEY=settings.SECRET_KEY
+ALGORITHM=settings.ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES=settings.ACCESS_TOKEN_EXPIRE_MINUTES
 
 
 
-SECRET_KEY="hello123"
-ALGORITHM= "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES=30
+
 
 
 password_hash=PasswordHash.recommended()
