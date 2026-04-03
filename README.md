@@ -5,7 +5,7 @@ An AI Assistent ChatApp where you can signup and chat with your own personalized
 ## Tech Stack
 
 - FastAPI
-- SQLAlchemy
+- PostgreSQL
 - SQLite
 - LangChain
 - Gemini
