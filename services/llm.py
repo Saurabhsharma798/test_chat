@@ -18,8 +18,7 @@ model = ChatGoogleGenerativeAI(
     google_api_key=GOOGLE_API_KEY,
     max_tokens=50,
     timeout=None,
-    max_retries=2,
-    # other params...
+    max_retries=2
 )
 
 
@@ -34,6 +33,8 @@ def get_conversation_history(conversation_id,db:Session):
             formatted_messages.append(AIMessage(content=message.content))
     return formatted_messages
 
+
+
 def call_model(conversation_id,db:Session):
     messages=get_conversation_history(db=db,conversation_id=conversation_id)
     print('----------------------------')
@@ -43,5 +44,6 @@ def call_model(conversation_id,db:Session):
     print(response)
     print('----------------------------')
     if response.content:
-        return {'role':'ai','content':response.content}
+        return {'role':'ai','content':response.content or "i couldn't generate the response."}
+
     return None

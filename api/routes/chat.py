@@ -30,7 +30,9 @@ def chat(chat_id:int,data:MessageRequest,db:Session=Depends(get_db),user=Depends
     db.commit()
     db.refresh(user_message)
     response=call_model(conversation_id,db)
-    
+    if response is None:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="ai failed to respond")    
+
     ai_message=Message(
         conversation_id=conversation_id,
         role="ai",
